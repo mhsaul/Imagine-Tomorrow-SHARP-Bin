@@ -145,7 +145,7 @@ def main():
     period4count, period5count, period6count = getFileValues() #Get previous file counts
 
     while 1:
-        raw_input(); #Wait for the user to press "Enter
+        raw_input() #Wait for the user to press "Enter
         stream = io.BytesIO() 
         highestIntensityPixel = calculateIntensity() #Get HIP for the image
         isRecyclable = sortItem(highestIntensityPixel, servo) #Sees if the item meets the recyclable threshold
