@@ -10,7 +10,6 @@ as trash or recycling
 
 from sort_functions import calculateIntensity, initServo, sortItem
 import cv2
-import io
 import RPIO
 import time
 from PIL import Image
@@ -22,7 +21,6 @@ initServo(servo)
 
 #wait for input
 raw_input()
-stream = io.BytesIO()
 HIP = calculateIntensity() #calculate value of the highest intensity pixel
 sortItem(HIP, servo) #sort the item
 time.sleep(1) #allow the object to fall into the category

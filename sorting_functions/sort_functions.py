@@ -15,7 +15,6 @@ file with the values that each class period has recycled
 
 import cv2 #Used to grayscale images
 import picamera #Used to take pictures
-import io #TODO Document
 import RPIO #Used to operate the servo
 import time #Used to count objects collected on specific days
 from PIL import Image #TODO Document
