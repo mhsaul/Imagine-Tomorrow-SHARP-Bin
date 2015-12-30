@@ -42,25 +42,6 @@ def sortItem(intensity, servo):
     initServo(servo)
     return isRecyclable
 
-#Loads the number of objects that have previously been recycled
-def getFileValues():
-    #open counter files for reading
-    period4 = open('/home/pi/period4.txt', 'r') 
-    period5 = open('/home/pi/period5.txt', 'r') 
-    period6 = open('/home/pi/period6.txt', 'r')
-
-    #read the values from the file
-    period4count = str(period4.read()) 
-    period5count = str(period5.read())
-    period6count = str(period6.read())
-
-    #close the counter files
-    period4.close()
-    period5.close()
-    period6.close()
-
-    return period4count, period5count, period6count
-
 def calculateIntensity():
     with picamera.PiCamera() as camera: #get access to the picamera
         camera.start_preview() #Show the image of the bottle
@@ -75,67 +56,6 @@ def calculateIntensity():
                 if itemIntensity > itemMax: #Calculate the max intensity
                     itemMax = itemIntensity     
         return itemMax
-
-def addToCounts(period4count, period5count, period6count):
-        today = time.strftime("%A") #returns day of the week
-        hour = time.strftime("%H") #returns hour of the day 0-23
-        minute = time.strftime("%M") #returns minute of the hour 0-59
-        ourtime = hour * 60 + minute #gives us the total minutes elapsed in the day
-        time_init = 715 #the initial time for monday, tuesday, thursday, friday
-        time_init_w = 725 #the initial time for wednesday
-        range_m = 55 #class period length for monday friday
-        range_t = 85 #class period length for tuesday thursday
-        range_w= 80 #class period length for wednesday
-        
-        #Find what time of day it is to add to the counter of the specific class period
-        if   (today == "Monday" or today == "Friday"):
-            if   (ourtime >= time_init and 
-               ourtime <= time_init + range_m):
-                period4count += 1
-            elif (ourtime >= time_init + 60 and
-                  ourtime <= time_init + range_m + 60):
-                period5count += 1
-            elif (ourtime >= time_init + 120 and 
-                  ourtime <= time_init + range_m + 120):
-                period6count += 1
-        elif (today == "Tuesday"):
-            if   (ourtime >= time_init and 
-                  ourtime <= time_init + range_t):
-                period4count += 1
-            elif (ourtime >= time_init + range_t + 5 and 
-                  ourtime <= time_init + 2 * range_t + 5):
-                period5count += 1
-        elif (today == "Wednesday"):
-            if   (ourtime >= time_init_w and 
-                  ourtime <= time_init_w + range_w):
-                period5count += 1
-            elif (ourtime >= time_init_w + range_w + 5 and 
-                  ourtime <= time_init_w + 2 * range_w + 5):
-                period6count += 1
-        elif (today == "Thursday"):
-            if   (ourtime >= time_init and 
-                  ourtime <= time_init + range_t):
-                period4count += 1
-            elif (ourtime >= time_init + range_t + 5 and 
-                  ourtime <= time_init + 2 * range_t + 5):
-                period6count += 1
-
-        return period4count, period5count, period6count
-
-        #Open the counter files
-        period4 = open('/home/pi/period4.txt', 'w') 
-        period5 = open('/home/pi/period5.txt', 'w') 
-        period6 = open('/home/pi/period6.txt', 'w')
-
-        #Write the new counts to the files
-        period4.write(str(period4count)) 
-        period5.write(str(period5count))
-        period6.write(str(period6count))
-
-        #Close the files
-        period4.close()
-        period5.close()
-        period6.close()
 
 
 def main():
@@ -152,8 +72,5 @@ def main():
             
     	time.sleep(1) #Give the servo time to drop off object in correct side of the bin
         initServo(servo)
-
-        if (isRecyclable == 1): #If the object is recyclable, increment the counts
-            period4count, period5count, period6count = addToCounts(period4count, period5count, period6count)
 
 main()
