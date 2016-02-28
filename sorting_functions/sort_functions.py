@@ -13,9 +13,9 @@ file with the values that each class period has recycled
 """
 
 
-import cv2 #Used to grayscale images
-import picamera #Used to take pictures
-import RPIO #Used to operate the servo
+import cv2 #Used to grayscale images/do all image processing
+import picamera #Raspberry Pi camera module, used to take photos
+import RPIO #Used to operate the servo through the Pi's GPIO pins
 import time #Used to count objects collected on specific days
 from PIL import Image #TODO Document
 from RPIO import PWM #Used to operate the servo
